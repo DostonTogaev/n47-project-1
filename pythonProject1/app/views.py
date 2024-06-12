@@ -13,9 +13,11 @@ def index(request):
 
 def product_detail(request, pk):
     product = Product.objects.get(id=pk)
+    attributes = product.attributes.all()
 
-    context={
-        'product': product
+    context = {
+        'product': product,
+        'attributes': attributes
     }
 
-    return render (request, 'app/product-details.html', context)
+    return render(request, 'app/product-details.html', context)

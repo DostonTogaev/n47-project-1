@@ -20,6 +20,16 @@ class Product(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def get_attributes(self) -> list[dict]:
+        product_attributes = AttributeProduct.objects.filter(product=self)
+        attributes = []
+        for pa in product_attributes:
+            attributes.append({
+                'attribute_key': pa.attribute.key_name,
+                'attribute_value': pa.attribute_value.value_name
+            })  # [ {},{},{}]
+        return attributes
+
     @property
     def discount_price(self):
         if self.discount > 0:
@@ -38,3 +48,22 @@ class Attributes(models.Model):
 
     def __str__(self):
         return self.name
+
+class AttributeKey(models.Model):
+    key_name = models.CharField(max_length=125, unique=True)
+
+    def __str__(self):
+        return self.key_name
+
+
+class AttributeValue(models.Model):
+    value_name = models.CharField(max_length=125, unique=True)
+
+    def __str__(self):
+        return self.value_name
+
+
+class AttributeProduct(models.Model):
+    product = models.ForeignKey('app.Product', on_delete=models.CASCADE)
+    attribute = models.ForeignKey('app.AttributeKey', on_delete=models.CASCADE)
+    attribute_value = models.ForeignKey('app.AttributeValue', on_delete=models.CASCADE)
