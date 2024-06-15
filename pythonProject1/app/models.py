@@ -67,3 +67,14 @@ class AttributeProduct(models.Model):
     product = models.ForeignKey('app.Product', on_delete=models.CASCADE)
     attribute = models.ForeignKey('app.AttributeKey', on_delete=models.CASCADE)
     attribute_value = models.ForeignKey('app.AttributeValue', on_delete=models.CASCADE)
+
+class Customer(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=100)
+    Billing_address = models.CharField(max_length=100)
+    joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
