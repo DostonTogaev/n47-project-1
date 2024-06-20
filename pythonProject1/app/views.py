@@ -25,6 +25,7 @@ def product_detail(request, pk):
 
 def custemer(request):
     customers = Customer.objects.all()
+
     context = {
         'customers': customers
     }
