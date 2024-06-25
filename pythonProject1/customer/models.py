@@ -31,8 +31,9 @@ class Customer(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
 #    email = models.EmailField(unique=True)
     username = models.CharField(max_length=255, null=True, blank=True)
-    phone_number = models.CharField(max_length=13, unique=True)
     birth_of_date = models.DateField(null=True, blank=True)
+    phone_number = models.CharField(max_length=13, unique=True)
+
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
