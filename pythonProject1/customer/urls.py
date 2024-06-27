@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import path,include
 from customer.views.views import custemer, add_customer, customer_detail, customer_delete, customer_edit
-from customer.views.auth import login_page, logout_page,register
+from customer.views.auth import login_page, logout_page, register_page
 
 urlpatterns = [
     path('customer', custemer, name='customer'),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('edit-customer/<int:customer_id>', customer_edit, name='edit_customer'),
     path('login-page/', login_page, name='login'),
     path('logout/', logout_page, name='logout'),
-    path('register/', register, name='register'),
+    path('register/', register_page, name='register'),
+    path('baton/', include('baton.urls')),
 ]

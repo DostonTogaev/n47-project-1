@@ -10,48 +10,45 @@ class CustomerModelForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-#    email = forms.EmailField()
-    phone = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Phone Number'}))
+    email = forms.EmailField()
     password = forms.CharField(max_length=255)
 
-    def clean_phone(self):
-        phone_number = self.data.get('phone')
-        if not User.objects.filter(phone_number=phone_number).exists():
-            raise forms.ValidationError('Phone does not exist')
-        return phone_number
+    def clean_email(self):
+        email = self.data.get('email')
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Email does not exist')
+        return email
 
     def clean_password(self):
-        phone_number = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email')
         password = self.data.get('password')
         try:
-            user = User.objects.get(phone_number=phone_number)
+            user = User.objects.get(email=email)
             print(user)
             if not user.check_password(password):
                 raise forms.ValidationError('Password did not match')
         except User.DoesNotExist:
-            raise forms.ValidationError(f'{phone_number} does not exists')
+            raise forms.ValidationError(f'{email} does not exists')
         return password
 
-class LogoutForm(forms.Form):
-    confirm = forms.BooleanField(
-        label="Chiqish uchun tasdiqlang",
-        required=True
-    )
 
-class RegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password',
-                               widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password',
-                                widget=forms.PasswordInput)
+
+class RegisterModelForm(forms.ModelForm):
+    confirm_password = forms.CharField(max_length=255)
 
     class Meta:
         model = User
+        fields = ['username', 'email', 'password']
 
-        fields = ['username', 'phone_number']
+    def clean_email(self):
+        email = self.data.get('email').lower()
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(f'The {email} is already registered')
+        return email
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Passwords don\'t match.')
-        return cd['password2']
+    def clean_password(self):
+        password = self.data.get('password')
+        confirm_password = self.data.get('confirm_password')
+        if password != confirm_password:
+            raise forms.ValidationError('Password didn/t match')
+        return password

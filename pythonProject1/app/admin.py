@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 
-from app.models import Product, Images, Attributes, AttributeKey, AttributeValue, AttributeProduct, Customer
+from app.models import Product, Images, Attributes, AttributeKey, AttributeValue, AttributeProduct
 
 # Register your models here.
 @admin.register(Product)
@@ -20,7 +20,7 @@ admin.site.register(Attributes)
 admin.site.register(AttributeKey)
 admin.site.register(AttributeValue)
 admin.site.register(AttributeProduct)
-admin.site.register(Customer)
+
 
 
 
